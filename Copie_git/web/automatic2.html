@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Control</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-green {
+            background-color: #28a745;
+        }
+
+        .button-green:hover {
+            background-color: #1e7e34;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .status {
+            font-size: 18px;
+            color: #007bff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Automatic Control</h1>
+
+        <!-- Section pour choisir le mode -->
+        <button class="button" onclick="activateMode('navigate')">Navigate to Specific Case</button>
+        <div id="navigate-form" class="form-group" style="display: none;">
+            <label for="start-cell">Enter Starting Case:</label>
+            <input type="text" id="start-cell" placeholder="Enter starting case">
+            
+            <label for="target-cell">Enter Target Case:</label>
+            <input type="text" id="target-cell" placeholder="Enter target case">
+            
+            <button class="button button-green" onclick="sendNavigateRequest()">Send Target</button>
+        </div>
+
+        <button class="button" onclick="activateMode('flaghunt')">Flag Hunt Mode</button>
+
+        <div class="status" id="status">Mode: Not Active</div>
+    </div>
+
+    <script>
+        function activateMode(mode) {
+            if (mode === 'navigate') {
+                document.getElementById('navigate-form').style.display = 'block';
+                document.getElementById('status').innerText = 'Mode: Navigate to Specific Case';
+            } else if (mode === 'flaghunt') {
+                document.getElementById('navigate-form').style.display = 'none';
+                sendModeRequest('flaghunt');
+            }
+        }
+
+        function sendNavigateRequest() {
+            const startCell = document.getElementById('start-cell').value;
+            const targetCell = document.getElementById('target-cell').value;
+
+            // Validate inputs
+            if (!startCell.match(/^[A-G][1-3]$/)) {
+                alert('Invalid starting case format! Use format like A1.');
+                return;
+            }
+
+            if (!targetCell.match(/^[A-G][1-3]$/)) {
+                alert('Invalid target case format! Use format like B3.');
+                return;
+            }
+
+            // Send request to server
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `http://137.194.173.32:8080/api/mode?mode=navigate&start=${startCell}&target=${targetCell}`, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        document.getElementById('status').innerText = `Mode: Navigating from ${startCell} to ${targetCell}`;
+                        console.log(`Navigating from ${startCell} to ${targetCell}`);
+                    } else {
+                        console.error('Failed to send navigate request');
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+
+        function sendModeRequest(mode) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", `http://137.194.173.32:8080/api/mode?mode=${mode}`, true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        document.getElementById('status').innerText = `Mode: ${mode === 'flaghunt' ? 'Flag Hunt Active' : 'Active'}`;
+                        console.log(`${mode} mode activated`);
+                    } else {
+                        console.error(`Failed to activate ${mode} mode`);
+                    }
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Interface</title>
+    <style>
+        /* Style pour centrer et styliser le conteneur */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .mode-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        
+        .mode-buttons button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .mode-buttons button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Control the Robot</h1>
+
+        <!-- Boutons de mode avec redirection -->
+        <div class="mode-buttons">
+            <!-- Bouton "Manual Mode" qui redirige vers la page manual.html -->
+            <button onclick="window.location.href='manual.html'">Manual Mode</button>
+            <!-- Bouton "Automatic Mode" qui peut aussi être lié à une autre fonction si nécessaire -->
+            <button onclick="activateAutomaticMode()">Automatic Mode</button>
+        </div>
+    </div>
+
+    <script>
+        // Fonction d'activation du mode automatique (exemple)
+        function activateAutomaticMode() {
+            console.log("Automatic mode activated");
+            // Autres actions pour le mode automatique
+        }
+    </script>
+</body>
+</html>

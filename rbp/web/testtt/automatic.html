@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic Control</title>
+    <script src="scripts.js"></script>
+    <link href="style.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Automatic Control</h1>
+
+        <!-- Section pour choisir le mode -->
+        <button class="button" onclick="activateMode('navigate')">Navigate to Specific Case</button>
+        <div id="navigate-form" class="form-group" style="display: none;">
+            <label for="start-cell">Enter Starting Case:</label>
+            <input type="text" id="start-cell" placeholder="Enter starting case">
+            
+            <label for="target-cell">Enter Target Case:</label>
+            <input type="text" id="target-cell" placeholder="Enter target case">
+            
+            <button class="button button-green" onclick="sendNavigateRequest()">Send Target</button>
+        </div>
+
+        <button class="button" onclick="activateMode('flaghunt')">Flag Hunt Mode</button>
+
+        <div class="status" id="status">Mode: Not Active</div>
+    </div>
+
+</body>
+</html>
